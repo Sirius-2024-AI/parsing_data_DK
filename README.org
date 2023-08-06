@@ -165,14 +165,14 @@ User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; 7d61
                                                               V          |                         |
                                                          app version     |                         |
                                                                          V                         |
-                                                           ?something like build number?           |
+                                                                   build number                    |
                                                                                                    V
                                                                                         ?fully random uuid. but?
 #+end_src
 
-ahah user agent also can look like this (after cache cleaning)
+Например такой build number можно найти [[https://4pda.to/forum/index.php?showtopic=1010867&view=findpost&p=123921224][тут]]
 
-thats funny
+AHAHAAHAHAHAH thats funny: User-Agent also can look like this (after cache cleaning):
 #+begin_src
 User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; ; NONAUTH
                                                                            ^
