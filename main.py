@@ -1,3 +1,5 @@
+import json
+import time
 import requests
 import hashlib
 from datetime import datetime
@@ -38,7 +40,6 @@ class DomClickApi:
 
 def pprint_json(json_str):
     try:
-        import json
         json_object = json.loads(json_str)
         json_formatted_str = json.dumps(json_object, indent=2, ensure_ascii=False).encode('utf8')
         print(json_formatted_str.decode())
@@ -63,19 +64,28 @@ print("RES:", res)
 print(res.text)
 pprint_json(res.text)
 
-res = dca.get(offers_url, params={
-    "address": "26f533ee-f4c6-4fd8-9cb5-a1910250622e",
-    "deal_type": "sale",
-    "category": "living",
-    "offer_type": ["flat", "layout"],
-    "rooms": ["1", "2"],
-    "area__gte": 50,
-    "floor__gte": 7,
+count_obj = json.loads(res.text)
+total = count_obj["pagination"]["total"]
 
-    "sort": "qi",
-    "sort_dir": "desc",
-    "offset": 0,
-    "limit": 20,
-})
-print("RES:", res)
-pprint_json(res.text)
+offset = 0
+while offset < total:
+    res = dca.get(offers_url, params={
+        "address": "26f533ee-f4c6-4fd8-9cb5-a1910250622e",
+        "deal_type": "sale",
+        "category": "living",
+        "offer_type": ["flat", "layout"],
+        "rooms": ["1", "2"],
+        "area__gte": 50,
+        "floor__gte": 7,
+
+        "sort": "qi",
+        "sort_dir": "desc",
+        "offset": offset,
+        "limit": 30,
+    })
+    print("RES:", res)
+    pprint_json(res.text)
+    offset += 30
+    offers_obj = json.loads(res.text)
+    total = offers_obj["pagination"]["total"]
+    print(f"{offset}/{total}")
