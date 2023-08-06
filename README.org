@@ -5,8 +5,11 @@
 
 ** Meta
 ~10.0.2.2~ SockDroid server IP (this is your PC fallback addr from android studio emulator)
+
 ~ru.domclick.mortgage~ for SockDroid 'per app proxy' setting
+
 ~frida -D emulator-5554 -f "ru.domclick.mortgage" -l ssl_bypass.js -l frinja.js~
+
 ~mitmproxy --mode socks5@8080 --ssl-insecure --set console_mouse=false~
 
 ** How to call using curl
@@ -106,6 +109,7 @@ hashes allways different :(
 
 ** Hash explanation
 [[https://codebeautify.org/hex-string-converter][hex2str]]
+
 [[https://www.md5.cz/][str2md5]]
 
 #+begin_src
