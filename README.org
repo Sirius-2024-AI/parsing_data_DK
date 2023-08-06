@@ -210,22 +210,16 @@ Cookie:  ns_session=bf39afb2-b918-442b-9618-a41e9f132f18;
 - COMPARATOR_TOKEN: --- but looks like constant :)
 
 ** Endpoints
-#+begin_src diff
-1,5c1,5
-< https://offers-service.domclick.ru/research/v5/offers/
-< ?category=living
-< &ne=55.97610722009936,38.02040060022105
-< &offer_type=complex
-< &sw=55.52693877990064,37.222275999778944
----
-> https://kazan.domclick.ru/search
-> ?deal_type=sale
-> &category=living
-> &offer_type=flat
-> &aids=1967
-7d6
-< &limit=10
-#+end_src
+| app                                                    | web                              |
+|--------------------------------------------------------+----------------------------------|
+| https://offers-service.domclick.ru/research/v5/offers/ | https://kazan.domclick.ru/search |
+| category=living                                        | category=living                  |
+| offer_type=complex                                     | offer_type=flat                  |
+| ne=55.97610722009936,38.02040060022105                 |                                  |
+| sw=55.52693877990064,37.222275999778944                |                                  |
+| limit=10                                               |                                  |
+|                                                        | aids=1967                        |
+|                                                        | deal_type=sale                   |
 
 ** Conclusion
 Для успешного выполнения запроса нужны следующие вещи:
