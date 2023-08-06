@@ -1,4 +1,4 @@
-* DOMclick parsing shit
+* Domclick Parser
 #+begin_quote
 Парсинг домклик через приватный api [[https://trashbox.ru/link/domclick-android][приложения]]
 #+end_quote
@@ -23,8 +23,10 @@
        -H 'Hash: v1:308cd7c23326fb5c160bd60037c5f0d4'
 #+end_src
 
-** Headers example
-*** list of headers
+** Headers
+*** Headers example
+hashes allways different :(
+
 #+begin_src
 Cookie:           ns_session=bf39afb2-b918-442b-9618-a41e9f132f18; ftgl_cookie_id=c0a1f3aba061752ce32334040b51f833;
                   dtCookie=v_4_srv_7_sn_3C4FCED90ECED453AADB736741B11CB7_perc_100000_ol_0_mul_1_app-3Aca312da39d5a5d07_1_rcs-3Acss_0;
@@ -104,10 +106,8 @@ User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; 7d61
 Timestamp:        1691269090
 Hash:             v1:2c9bed70a34228fbaf6af3c72fbbb0f3
 #+end_src
-*** notes
-hashes allways different :(
 
-** Hash explanation
+*** Hash explanation
 [[https://codebeautify.org/hex-string-converter][hex2str]]
 
 [[https://www.md5.cz/][str2md5]]
@@ -142,6 +142,7 @@ result: d037c41c5e27c2f55b8deaa50a889b71
 orig  : d037c41c5e27c2f55b8deaa50a889b71
 #+end_src
 
+HMMM
 #+begin_src
 # hex
 616436356633333162303262393064383638636264643636306438326162613068747470733a2f2f6f66666572732d736572766963652e646f6d636c69636b2e72752f72657365617263682f76362f67656f2f706f696e74732f3f616464726573733d31643134363361652d633830662d346431392d393333312d61316236386138356235353326616964733d323239392663617465676f72793d6c6976696e67266465616c5f747970653d73616c65266e653d35362e31333933373431333036363533362c33372e3936373739383934313430313231266f666665725f747970653d666c6174266f666665725f747970653d6c61796f75742673616c655f70726963655f66756c6c3d312673773d35352e30323130383139313730353138372c33362e38303332363830353835393838267a6f6f6d3d3826707265636973696f6e3d3531363931323830313935
@@ -153,25 +154,45 @@ time : 1691280195
 and there is no strange user uuid from user agent because user agent looks like this:
 > User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; ; NONAUTH
                                                                              ^
-                                                           see? no uuid shit |
+                                                                             |
+                                                                     see? no uuid shit
 #+end_src
 
-** User-Agent exlanation
+*** User-Agent exlanation
 #+begin_src
 User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; 7d617456-90a1-4c37-b251-696830776882; NONAUTH
-                                                           |             |                         |
-                                                           V             |                         |
-                                                           app version   |                         |
+                                                              |          |                         |
+                                                              V          |                         |
+                                                         app version     |                         |
                                                                          V                         |
                                                            ?something like build number?           |
                                                                                                    V
                                                                                         ?fully random uuid. but?
 #+end_src
 
-ahah or user agent can be this (after cache cleaning) thats funny
+ahah user agent also can look like this (after cache cleaning)
+
+thats funny
 #+begin_src
 User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; ; NONAUTH
+                                                                           ^
+                                                                           |
+                                                                   see? no uuid shit
 #+end_src
 
 Похоже что в принципе все равно на user agent главное чтобы хэш получался как надо
+
 Б: безопасность
+
+*** TODO Cookies
+
+** Conclusion
+Для успешного выполнения запроса нужны следующие вещи:
+1. ~X-Service~ header
+1. ~Timestamp~ header
+1. ~User-Agent~ header
+1. ~Hash~ header вычисляемый через ~User-Agent~, ~Timestamp~ и эндпоинт запроса
+1. ~Cookie~ ???? мб надо мб можно просто использовать те что возвращает сервер
+
+** TODO Let's rock
+some python code
