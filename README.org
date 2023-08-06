@@ -203,11 +203,17 @@ Cookie:  ns_session=bf39afb2-b918-442b-9618-a41e9f132f18;
          COMPARATOR_TOKEN=GB77xdPkTFeVoqLjLAMlIA==.ZM62qA.EezGAeg2S97L-GKHcrIsfQJ4wgMcK8B7FNiS3N5rrIs
 #+end_src
 
-- ns_session: ---
-- ftgl_cookie_id: not required, sets automaticly
-- [[https://www.dynatrace.com/support/help/manage/data-privacy-and-security/data-privacy/cookies][dtCookie]]: Dynatrace Real User Monitoring
-- qrator_ssid: ---
-- COMPARATOR_TOKEN: --- but looks like constant :)
+- ns_session: sets after GET https://api.domclick.ru/core/no-auth-zone/api/v1/ensure_session expires after 1 month
+- ftgl_cookie_id: sets after GET https://ipoteka.domclick.ru/mobile/v1/feature_toggles
+- [[https://www.dynatrace.com/support/help/manage/data-privacy-and-security/data-privacy/cookies][dtCookie]]: sets after GET https://api.domclick.ru/core/no-auth-zone/api/v1/ensure_session
+- qrator_ssid: sets after GET https://api.domclick.ru/core/no-auth-zone/api/v1/ensure_session
+- COMPARATOR_TOKEN: --- not a constant (may be recreates every day)
+
+*** COMPARATOR_TOKEN
+#+begin_src
+1. GB77xdPkTFeVoqLjLAMlIA==.ZM62qA.EezGAeg2S97L-GKHcrIsfQJ4wgMcK8B7FNiS3N5rrIs
+2. jSGzaT55STKpCgiFHiX3iA==.ZM7jFg.pS0N2e689kLt8g7O664toB9Brshr4_CqKHI0IZ9rnWE
+#+end_src
 
 ** Endpoints
 | app                                                    | web                              |
@@ -228,6 +234,3 @@ Cookie:  ns_session=bf39afb2-b918-442b-9618-a41e9f132f18;
 1. ~User-Agent~ header
 1. ~Hash~ header вычисляемый через ~User-Agent~, ~Timestamp~ и эндпоинт запроса
 1. ~Cookie~ ???? мб надо мб можно просто использовать те что возвращает сервер
-
-** TODO Let's rock
-some python code
