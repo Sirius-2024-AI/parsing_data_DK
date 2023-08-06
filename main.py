@@ -63,20 +63,19 @@ print("RES:", res)
 print(res.text)
 pprint_json(res.text)
 
-# res = dca.get(offers_url, params={
-#     "address": "26f533ee-f4c6-4fd8-9cb5-a1910250622e",
-#     "deal_type": "sale",
-#     "category": "living",
-#     "offer_type": ["flat", "layout"],
-#     "rooms": ["1", "2"],
-#     "time_on_foot__lte": "5",
-#     "area__gte": 50,
-#     "floor__gte": 7,
+res = dca.get(offers_url, params={
+    "address": "26f533ee-f4c6-4fd8-9cb5-a1910250622e",
+    "deal_type": "sale",
+    "category": "living",
+    "offer_type": ["flat", "layout"],
+    "rooms": ["1", "2"],
+    "area__gte": 50,
+    "floor__gte": 7,
 
-#     "sort": "qi",
-#     "sort_dir": "desc",
-#     "offset": 0,
-#     "limit": 20,
-# })
-# print("RES:", res)
-# pprint_json(res.text)
+    "sort": "qi",
+    "sort_dir": "desc",
+    "offset": 0,
+    "limit": 20,
+})
+print("RES:", res)
+pprint_json(res.text)

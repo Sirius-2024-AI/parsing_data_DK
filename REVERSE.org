@@ -205,7 +205,7 @@ Cookie:  ns_session=bf39afb2-b918-442b-9618-a41e9f132f18;
 - ftgl_cookie_id: sets after GET https://ipoteka.domclick.ru/mobile/v1/feature_toggles
 - [[https://www.dynatrace.com/support/help/manage/data-privacy-and-security/data-privacy/cookies][dtCookie]]: sets after GET https://api.domclick.ru/core/no-auth-zone/api/v1/ensure_session
 - qrator_ssid: sets after GET https://api.domclick.ru/core/no-auth-zone/api/v1/ensure_session
-- COMPARATOR_TOKEN: --- not a constant (may be recreates every day)
+- COMPARATOR_TOKEN: --- not required
 
 *** COMPARATOR_TOKEN
 #+begin_src
@@ -230,5 +230,5 @@ Cookie:  ns_session=bf39afb2-b918-442b-9618-a41e9f132f18;
 1. ~X-Service~ header
 1. ~Timestamp~ header
 1. ~User-Agent~ header
-1. ~Hash~ header вычисляемый через ~User-Agent~, ~Timestamp~ и эндпоинт запроса
-1. ~Cookie~ ???? мб надо мб можно просто использовать те что возвращает сервер
+1. ~Hash~ header: вычисляется через ~User-Agent~, ~Timestamp~ и эндпоинт запроса
+1. ~Cookie~ все устанавливается после запросов по нужным эндпоинтам
