@@ -8,39 +8,75 @@ class DomClickApi:
         self.session = requests.Session()
         self.session.headers.update({"X-Service": "true",
                                      "Connection": "Keep-Alive",
-                                     "User-Agent": "Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; ; NONAUTH"
+                                     "User-Agent": "Android; 12; Google; google_pixel_5; 8.72.0; 8720006; ; NONAUTH"
                                      })
 
-        self.get("https://api.domclick.ru/core/no-auth-zone/api/v1/ensure_session")
-        self.get("https://ipoteka.domclick.ru/mobile/v1/feature_toggles")
+        print(self.get("https://api.domclick.ru/core/no-auth-zone/api/v1/ensure_session"))
+        print(self.get("https://ipoteka.domclick.ru/mobile/v1/feature_toggles"))
 
-    def get(self, url, *args, **kwargs):
-        self.update_headers(url)
-        result = self.session.get(url, *args, **kwargs)
+    def get(self, url, **kwargs):
+        self.__update_headers(url, **kwargs)
+        result = self.session.get(url, **kwargs)
+        print(self.session.cookies.get_dict())
         return result
 
-    def update_headers(self, url):
+    def __update_headers(self, url, **kwargs):
+        url = self.__get_prepared_url(url, **kwargs)
         sault = "ad65f331b02b90d868cbdd660d82aba0"
         timestamp = str(int(datetime.now().timestamp()))
-
         encoded = (sault + url + timestamp).encode("UTF-8")
         h = hashlib.md5(encoded).hexdigest()
-
         self.session.headers.update({"Timestamp": timestamp,
                                      "Hash": "v1:" + h,
                                      })
 
+    def __get_prepared_url(self, url, **kwargs):
+        p = requests.models.PreparedRequest()
+        p.prepare(method="GET", url=url, **kwargs)
+        return p.url
+
 
 def pprint_json(json_str):
-    import json
-    json_object = json.loads(json_str)
-    json_formatted_str = json.dumps(json_object, indent=2, ensure_ascii=False).encode('utf8')
-    print(json_formatted_str.decode())
+    try:
+        import json
+        json_object = json.loads(json_str)
+        json_formatted_str = json.dumps(json_object, indent=2, ensure_ascii=False).encode('utf8')
+        print(json_formatted_str.decode())
+    except:
+        print(json_str)
 
 
-offers_url = 'https://offers-service.domclick.ru/research/v5/offers/?address=1d1463ae-c80f-4d19-9331-a1b68a85b553&aids=2299&category=living&deal_type=sale&ne=56.13937412952625%2C37.96779894140121&offer_type=flat&offer_type=layout&sale_price_full=1&sw=55.02108191587969%2C36.8032680585988&zoom=8&sort=qi&sort_dir=desc&offset=0&limit=20'
+offers_url = 'https://offers-service.domclick.ru/research/v5/offers/'
+count_url = 'https://offers-service.domclick.ru/research/v5/offers/count/'
 
 dca = DomClickApi()
-res = dca.get(offers_url)
+res = dca.get(count_url, params={
+    "address": "26f533ee-f4c6-4fd8-9cb5-a1910250622e",
+    "deal_type": "sale",
+    "category": "living",
+    "offer_type": ["flat", "layout"],
+    "rooms": ["1", "2"],
+    "area__gte": 50,
+    "floor__gte": 7,
+})
 print("RES:", res)
+print(res.text)
 pprint_json(res.text)
+
+# res = dca.get(offers_url, params={
+#     "address": "26f533ee-f4c6-4fd8-9cb5-a1910250622e",
+#     "deal_type": "sale",
+#     "category": "living",
+#     "offer_type": ["flat", "layout"],
+#     "rooms": ["1", "2"],
+#     "time_on_foot__lte": "5",
+#     "area__gte": 50,
+#     "floor__gte": 7,
+
+#     "sort": "qi",
+#     "sort_dir": "desc",
+#     "offset": 0,
+#     "limit": 20,
+# })
+# print("RES:", res)
+# pprint_json(res.text)
