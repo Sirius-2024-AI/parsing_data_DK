@@ -101,10 +101,8 @@
   - От: ~build_year__gte int~
   - До: ~build_year__lte int~
 - Год сдачи ЖК
-  - Год ~
-~
-    - Сдан
-building_completion_year: ~done~
+  - Год ~building_completion_year~
+    - Сдан: ~done~
     - 2023: ~2023~
     - 2024: ~2024~
     - 2025: ~2025~
