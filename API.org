@@ -1,0 +1,158 @@
+* API
+** Список регионов
+~https://geo-service.domclick.ru/research/api/v1/autocomplete/regions~
+
+Нужен для определения uuid региона, который в свою очередь нужен для поиска квартир
+
+- Поиск по имени: ~name str~
+
+Так например выглядит Казань
+#+begin_src json
+  {
+      "display_name": "Россия, Республика Татарстан, Казань",
+      "guid": "26f533ee-f4c6-4fd8-9cb5-a1910250622e",
+      "id": 1967,
+      "kind": "locality",
+      "lat": 55.796289,
+      "lc_lat": 55.603125,
+      "locality_guid": "26f533ee-f4c6-4fd8-9cb5-a1910250622e",
+      "lon": 49.108795,
+      "name": "Казань",
+      "parents": [
+          1,
+          832,
+          1959,
+          1963
+      ],
+      "region_guid": "6c86b638-ff05-49be-a3a2-83d868611524",
+      "region_name": "Республика Татарстан",
+      "uc_lon": 49.379394
+  },
+#+end_src
+
+** Поиск/Сортировка/Фильтрация
+~https://offers-service.domclick.ru/research/v5/offers/~ результат
+
+~https://offers-service.domclick.ru/research/v5/offers/count/~ количество
+
+- Регион/Город
+  - uuid региона: ~address uuidStr~
+- Купить/Снять
+  - Тип: ~deal_type str~
+    - Купить: ~sale~
+    - Снять: ~rent~ ОСТОРОЖНО! МОГУТ БЫТЬ ДРУГИЕ ФИЛЬТРЫ
+- Жилье/Коммерция/Гаражи
+  - Тип: ~category str~
+    - Жилье: ~living~
+    - Коммерция: ~commercial~ ОСТОРОЖНО! МОГУТ БЫТЬ ДРУГИЕ ФИЛЬТРЫ
+    - Гаражи: ~garage~ ОСТОРОЖНО! МОГУТ БЫТЬ ДРУГИЕ ФИЛЬТРЫ
+- Тип недвижимости
+  - Тип: ~offer_type str~
+    - Квартика в Вторичке: ~flat~
+    - квартира в Новостройке: ~layout~
+- Кол-во комнат:
+  - Кол-во: ~rooms str~
+    - студия: ~st~
+    - 1: ~1~
+    - 2: ~2~
+    - 3: ~3~
+    - 4+: ~4+~
+- Расcтояние до метро
+  - Пешком: ~time_on_foot__lte int [5, 10, 15, 20]~
+  - Транспотром: ~time_by_car__lte int [5, 10, 15, 20]~
+- Общая площадь
+  - От: ~area__gte int~
+  - До: ~area__lte int~
+- Жилая площадь
+  - От: ~living_area__gte int~
+  - До: ~living_area__lte int~
+- Площадь кухни
+  - От: ~kitchen_area__gte int [6, 7, 8, 9, 10, 12, 15]~
+- Этаж
+  - От: ~floor__gte int~
+  - До: ~floor__lte int~
+  - Не первый ~floor_not_first int [0, 1]~
+  - Не последний ~floor_not_last int [0, 1]~
+  - Последний ~floor_last int [0, 1]~
+- Высота потолков
+  - От: ~ceiling_height__gte float [2.5, 2.7, 3, 4]~
+- Балкон/лоджия
+  - Количество: ~balconies str [1, 2, 3+]~
+- Санузел
+  - Совмещенный: ~has_connected_bathrooms int [0, 1]~
+  - Раздельный: ~has_separated_bathrooms int [0, 1]~
+- Ремонт
+  - Тип: ~renovation str~
+    - Без ремонта: ~without_repair~
+    - Дизайнерский: ~design~
+    - Косметический: ~standard~
+    - Евроремонт: ~well_done~
+- Вид из окна
+  - Вид: ~window_view str~
+    - Двор: ~garden~
+    - Парк: ~park~
+    - Водоем: ~water~
+    - Лес: ~forest~
+    - Улица: ~street~
+- Этажей в доме
+  - От: ~floors__gte int~
+  - До: ~floors__lte int~
+- Год постройки дома
+  - От: ~build_year__gte int~
+  - До: ~build_year__lte int~
+- Год сдачи ЖК
+  - Год ~
+~
+    - Сдан
+building_completion_year: ~done~
+    - 2023: ~2023~
+    - 2024: ~2024~
+    - 2025: ~2025~
+    - После 2025: ~2025+~
+- Материалы стен
+  - Материал ~wall_type~
+    - Монолитный: ~monolith~
+    - Кирпично-монолитный: ~brick_monolith~
+    - Кирпичный: ~brick~
+    - Панельный: ~panel~
+    - Блочный: ~block~
+    - Деревянный: ~wood~
+- Лифт
+  - Пассажирсикй: ~has_lifts int [0, 1]~
+  - Грузовой: ~has_freight_lifts int [0, 1]~
+- Апартаменты
+  - Кроме апартаментов: ~is_apartment bool [true]~
+  - Только апартаменты: ~is_apartment bool [false]~
+- Тип продажи
+  - Тип: ~sell_type str~
+    - Свободная: ~free_sale~
+    - Альтернативная: ~alternative~
+- Продавец
+  - от собственника: ~is_owner int [0, 1]~
+  - от застройщика: ~from_developer int [0, 1]~
+  - от сбербанка: ~is_sber int [0, 1]~
+- Дата публикации
+  - Период: ~published_filter str~
+    - За час: ~hour~
+    - За сегодня: ~today~
+    - за сутки: ~24h~
+    - За 10 дней: ~10d~
+    - За 30 дней: ~30d~
+- ~offset int~
+- ~limit int~ 30 is max
+- ~sort str~
+  - Рекомендуемые: ~qi~
+  - По дате публикации: ~published~
+  - По дате обновления: ~updated~
+  - По цене: ~price~
+  - За м2: ~square_price~
+- ~sort_dir str [asc, desc]~
+
+
+Unknown:
+- ?aids int?
+- ne: 56.13937412838708,37.96779894140121
+- sw: 55.02108191470746,36.8032680585988
+- zoom int
+- sale_price_full int
+- time_to_get int

@@ -1,0 +1,234 @@
+* REVERSE
+Парсинг домклик через приватный api [[https://trashbox.ru/link/domclick-android][приложения]]
+
+** Meta
+~10.0.2.2~ SockDroid server IP (this is your PC fallback addr from android studio emulator)
+
+~ru.domclick.mortgage~ for SockDroid 'per app proxy' setting
+
+~frida -D emulator-5554 -f "ru.domclick.mortgage" -l ssl_bypass.js -l frinja.js~
+
+~mitmproxy --mode socks5@8080 --ssl-insecure --set console_mouse=false~
+
+** How to call using curl
+#+begin_src bash
+  curl -X GET \
+       'https://offers-service.domclick.ru/research/v5/offers/\?address\=7b4698a7-f8b8-424c-9195-e24f3ddb88f3\&category\=living\&deal_type\=sale\&ne\=60.4998448896239%2C31.1066907320116&offer_type=flat&offer_type=layout&rooms=1&sale_price_full=1&sw=59.36458019211444%2C29.772280750617085&sort=qi&sort_dir=desc&offset=0&limit=20' \
+       -H "X-Service: mobile/domclick_andr/8.72.0" \
+       -H 'cookie: ns_session=bf39afb2-b918-442b-9618-a41e9f132f18; ftgl_cookie_id=c0a1f3aba061752ce32334040b51f833; dtCookie=v_4_srv_7_sn_3C4FCED90ECED453AADB736741B11CB7_perc_100000_ol_0_mul_1_app-3Aca312da39d5a5d07_1_app-3A37d82a95eb231749_0_rcs-3Acss_0; qrator_ssid=1691269065.323.yMdYfClKme3yobwG-1mfp87q8v8mlon02q4edqk98mmequv8h; COMPARATOR_TOKEN=GB77xdPkTFeVoqLjLAMlIA==.ZM62qA.EezGAeg2S97L-GKHcrIsfQJ4wgMcK8B7FNiS3N5rr' \
+       -H 'User-Agent: Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; 7d617456-90a1-4c37-b251-696830776882; NONAUTH' \
+       -H 'Timestamp: 1691269796' \
+       -H 'Hash: v1:308cd7c23326fb5c160bd60037c5f0d4'
+#+end_src
+
+** Headers
+*** Headers example
+hashes allways different :(
+
+#+begin_src
+Cookie:           ns_session=bf39afb2-b918-442b-9618-a41e9f132f18; ftgl_cookie_id=c0a1f3aba061752ce32334040b51f833;
+                  dtCookie=v_4_srv_7_sn_3C4FCED90ECED453AADB736741B11CB7_perc_100000_ol_0_mul_1_app-3Aca312da39d5a5d07_1_rcs-3Acss_0;
+                  qrator_ssid=1691269065.323.yMdYfClKme3yobwG-1mfp87q8v8mlon02q4edqk98mmequv8h;
+                  COMPARATOR_TOKEN=GB77xdPkTFeVoqLjLAMlIA==.ZM62qA.EezGAeg2S97L-GKHcrIsfQJ4wgMcK8B7FNiS3N5rrIs
+User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; 7d617456-90a1-4c37-b251-696830776882; NONAUTH
+Timestamp:        1691269067
+Hash:             v1:07f37a4fcb4d6ddc67a5dc6da11c107b
+#+end_src
+
+#+begin_src
+Cookie:           ns_session=bf39afb2-b918-442b-9618-a41e9f132f18; ftgl_cookie_id=c0a1f3aba061752ce32334040b51f833;
+                  dtCookie=v_4_srv_7_sn_3C4FCED90ECED453AADB736741B11CB7_perc_100000_ol_0_mul_1_app-3Aca312da39d5a5d07_1_rcs-3Acss_0;
+                  qrator_ssid=1691269065.323.yMdYfClKme3yobwG-1mfp87q8v8mlon02q4edqk98mmequv8h;
+                  COMPARATOR_TOKEN=GB77xdPkTFeVoqLjLAMlIA==.ZM62qA.EezGAeg2S97L-GKHcrIsfQJ4wgMcK8B7FNiS3N5rrIs
+User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; 7d617456-90a1-4c37-b251-696830776882; NONAUTH
+Timestamp:        1691269067
+Hash:             v1:eab9dc76d4ba4ea23eeb125201689012
+#+end_src
+
+#+begin_src
+Cookie:           ns_session=bf39afb2-b918-442b-9618-a41e9f132f18; ftgl_cookie_id=c0a1f3aba061752ce32334040b51f833;
+                  dtCookie=v_4_srv_7_sn_3C4FCED90ECED453AADB736741B11CB7_perc_100000_ol_0_mul_1_app-3Aca312da39d5a5d07_1_rcs-3Acss_0;
+                  qrator_ssid=1691269065.323.yMdYfClKme3yobwG-1mfp87q8v8mlon02q4edqk98mmequv8h;
+                  COMPARATOR_TOKEN=GB77xdPkTFeVoqLjLAMlIA==.ZM62qA.EezGAeg2S97L-GKHcrIsfQJ4wgMcK8B7FNiS3N5rrIs
+User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; 7d617456-90a1-4c37-b251-696830776882; NONAUTH
+Timestamp:        1691269067
+Hash:             v1:c835fb3396d0eb0421f3879eb5f86e17
+#+end_src
+
+#+begin_src
+Cookie:           ns_session=bf39afb2-b918-442b-9618-a41e9f132f18; ftgl_cookie_id=c0a1f3aba061752ce32334040b51f833;
+                  dtCookie=v_4_srv_7_sn_3C4FCED90ECED453AADB736741B11CB7_perc_100000_ol_0_mul_1_app-3Aca312da39d5a5d07_1_rcs-3Acss_0;
+                  qrator_ssid=1691269065.323.yMdYfClKme3yobwG-1mfp87q8v8mlon02q4edqk98mmequv8h;
+                  COMPARATOR_TOKEN=GB77xdPkTFeVoqLjLAMlIA==.ZM62qA.EezGAeg2S97L-GKHcrIsfQJ4wgMcK8B7FNiS3N5rrIs
+User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; 7d617456-90a1-4c37-b251-696830776882; NONAUTH
+Timestamp:        1691269067
+Hash:             v1:d2f245309602d58590e6b6684848e25d
+#+end_src
+
+#+begin_src
+Cookie:           ns_session=bf39afb2-b918-442b-9618-a41e9f132f18; ftgl_cookie_id=c0a1f3aba061752ce32334040b51f833;
+                  dtCookie=v_4_srv_7_sn_3C4FCED90ECED453AADB736741B11CB7_perc_100000_ol_0_mul_1_app-3Aca312da39d5a5d07_1_rcs-3Acss_0;
+                  qrator_ssid=1691269065.323.yMdYfClKme3yobwG-1mfp87q8v8mlon02q4edqk98mmequv8h;
+                  COMPARATOR_TOKEN=GB77xdPkTFeVoqLjLAMlIA==.ZM62qA.EezGAeg2S97L-GKHcrIsfQJ4wgMcK8B7FNiS3N5rrIs
+User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; 7d617456-90a1-4c37-b251-696830776882; NONAUTH
+Timestamp:        1691269067
+Hash:             v1:7937f88d31e51cf43deaa4299e2a46ee
+#+end_src
+
+#+begin_src
+Cookie:           ns_session=bf39afb2-b918-442b-9618-a41e9f132f18; ftgl_cookie_id=c0a1f3aba061752ce32334040b51f833; dtCookie=v_4_srv_7_sn_3C4FCED90E
+                  CED453AADB736741B11CB7_perc_100000_ol_0_mul_1_app-3Aca312da39d5a5d07_1_app-3A37d82a95eb231749_0_rcs-3Acss_0;
+                  qrator_ssid=1691269065.323.yMdYfClKme3yobwG-1mfp87q8v8mlon02q4edqk98mmequv8h;
+                  COMPARATOR_TOKEN=GB77xdPkTFeVoqLjLAMlIA==.ZM62qA.EezGAeg2S97L-GKHcrIsfQJ4wgMcK8B7FNiS3N5rrIs
+User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; 7d617456-90a1-4c37-b251-696830776882; NONAUTH
+Timestamp:        1691269086
+Hash:             v1:959183bdb3c91eed6e922bb55101397e
+#+end_src
+
+#+begin_src
+Cookie:           ns_session=bf39afb2-b918-442b-9618-a41e9f132f18; ftgl_cookie_id=c0a1f3aba061752ce32334040b51f833; dtCookie=v_4_srv_7_sn_3C4FCED90E
+                  CED453AADB736741B11CB7_perc_100000_ol_0_mul_1_app-3Aca312da39d5a5d07_1_app-3A37d82a95eb231749_0_rcs-3Acss_0;
+                  qrator_ssid=1691269065.323.yMdYfClKme3yobwG-1mfp87q8v8mlon02q4edqk98mmequv8h;
+                  COMPARATOR_TOKEN=GB77xdPkTFeVoqLjLAMlIA==.ZM62qA.EezGAeg2S97L-GKHcrIsfQJ4wgMcK8B7FNiS3N5rrIs
+User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; 7d617456-90a1-4c37-b251-696830776882; NONAUTH
+Timestamp:        1691269087
+Hash:             v1:8ddb3372f374cb7dd8a3bdf05e6b7bb8
+#+end_src
+
+#+begin_src
+Cookie:           ns_session=bf39afb2-b918-442b-9618-a41e9f132f18; ftgl_cookie_id=c0a1f3aba061752ce32334040b51f833; dtCookie=v_4_srv_7_sn_3C4FCED90E
+                  CED453AADB736741B11CB7_perc_100000_ol_0_mul_1_app-3Aca312da39d5a5d07_1_app-3A37d82a95eb231749_0_rcs-3Acss_0;
+                  qrator_ssid=1691269065.323.yMdYfClKme3yobwG-1mfp87q8v8mlon02q4edqk98mmequv8h;
+                  COMPARATOR_TOKEN=GB77xdPkTFeVoqLjLAMlIA==.ZM62qA.EezGAeg2S97L-GKHcrIsfQJ4wgMcK8B7FNiS3N5rrIs
+User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; 7d617456-90a1-4c37-b251-696830776882; NONAUTH
+Timestamp:        1691269090
+Hash:             v1:2c9bed70a34228fbaf6af3c72fbbb0f3
+#+end_src
+
+after cache clean:
+#+begin_src
+Cookie:           ns_session=946803c5-5d78-4f4a-9ec4-6521ea86401e;
+                  dtCookie=v_4_srv_6_sn_AEC3D67825E11FBDFBB32BEB537AF62B_perc_100000_ol_0_mul_1_app-3Aca312da39d5a5d07_1_rcs-3Acss_0;
+                  qrator_ssid=1691280135.945.94NytlabACedRHLe-jopmltqnobp0p790v1ic8ee4l00o99sh
+User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; ; NONAUTH
+Timestamp:        1691280136
+Hash:             v1:b0afa51b6d2a837a7f7c70d4468300a2
+#+end_src
+
+*** Hash explanation
+[[https://codebeautify.org/hex-string-converter][hex2str]]
+
+[[https://www.md5.cz/][str2md5]]
+
+#+begin_src
+# hex
+616436356633333162303262393064383638636264643636306438326162613068747470733a2f2f636c636b646d2e646f6d636c69636b2e72752f6170692f76312f6d6f62696c653136393132373834313937643631373435362d393061312d346333372d623235312d363936383330373736383832
+
+# dehex
+ad65f331b02b90d868cbdd660d82aba0              # sault
+https://clckdm.domclick.ru/api/v1/mobile      # request url
+1691278419                                    # timestamp
+7d617456-90a1-4c37-b251-696830776882          # user agent shit
+#+end_src
+
+#+begin_src
+ad65f331b02b90d868cbdd660d82aba0
+https://offers-service.domclick.ru/research/v5/offers/count/?address=7b4698a7-f8b8-424c-9195-e24f3ddb88f3&category=living&deal_type=sale&ne=60.75225578319596%2C31.24406656506551&offer_type=flat&offer_type=layout&rooms=1&sale_price_full=1&sw=59.10130421497775%2C29.634904917563176&zoom=8
+1691278419
+7d617456-90a1-4c37-b251-696830776882
+#+end_src
+
+POC
+#+begin_src
+ad65f331b02b90d868cbdd660d82aba0
+https://offers-service.domclick.ru/research/v5/offers/count/?address=7b4698a7-f8b8-424c-9195-e24f3ddb88f3&category=living&deal_type=sale&ne=60.61451569031663%2C31.24406656506551&offer_type=flat&offer_type=layout&rooms=1&sale_price_full=1&sw=59.24548217984598%2C29.634904917563176&zoom=8
+1691278144
+7d617456-90a1-4c37-b251-696830776882
+
+ad65f331b02b90d868cbdd660d82aba0https://offers-service.domclick.ru/research/v5/offers/count/?address=7b4698a7-f8b8-424c-9195-e24f3ddb88f3&category=living&deal_type=sale&ne=60.61451569031663%2C31.24406656506551&offer_type=flat&offer_type=layout&rooms=1&sale_price_full=1&sw=59.24548217984598%2C29.634904917563176&zoom=816912781447d617456-90a1-4c37-b251-696830776882
+result: d037c41c5e27c2f55b8deaa50a889b71
+orig  : d037c41c5e27c2f55b8deaa50a889b71
+#+end_src
+
+HMMM
+#+begin_src
+# hex
+616436356633333162303262393064383638636264643636306438326162613068747470733a2f2f6f66666572732d736572766963652e646f6d636c69636b2e72752f72657365617263682f76362f67656f2f706f696e74732f3f616464726573733d31643134363361652d633830662d346431392d393333312d61316236386138356235353326616964733d323239392663617465676f72793d6c6976696e67266465616c5f747970653d73616c65266e653d35362e31333933373431333036363533362c33372e3936373739383934313430313231266f666665725f747970653d666c6174266f666665725f747970653d6c61796f75742673616c655f70726963655f66756c6c3d312673773d35352e30323130383139313730353138372c33362e38303332363830353835393838267a6f6f6d3d3826707265636973696f6e3d3531363931323830313935
+
+# dehex
+sault: ad65f331b02b90d868cbdd660d82aba0
+url  : https://offers-service.domclick.ru/research/v6/geo/points/?address=1d1463ae-c80f-4d19-9331-a1b68a85b553&aids=2299&category=living&deal_type=sale&ne=56.13937413066536,37.96779894140121&offer_type=flat&offer_type=layout&sale_price_full=1&sw=55.02108191705187,36.8032680585988&zoom=8&precision=5
+time : 1691280195
+and there is no strange user uuid from user agent because user agent looks like this:
+> User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; ; NONAUTH
+                                                                             ^
+                                                                             |
+                                                                     see? no uuid shit
+#+end_src
+
+*** User-Agent exlanation
+#+begin_src
+User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; 7d617456-90a1-4c37-b251-696830776882; NONAUTH
+                                                              |          |                         |
+                                                              V          |                         |
+                                                         app version     |                         |
+                                                                         V                         |
+                                                                   build number                    |
+                                                                                                   V
+                                                                                        ?fully random uuid. but?
+#+end_src
+
+Например такой build number можно найти [[https://4pda.to/forum/index.php?showtopic=1010867&view=findpost&p=123921224][тут]]
+
+AHAHAAHAHAHAH thats funny: User-Agent also can look like this (after cache cleaning):
+#+begin_src
+User-Agent:       Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; ; NONAUTH
+                                                                           ^
+                                                                           |
+                                                                   see? no uuid shit
+#+end_src
+
+Похоже что в принципе все равно на user agent главное чтобы хэш получался как надо
+
+Б: безопасность
+
+*** Cookies
+#+begin_src
+Cookie:  ns_session=bf39afb2-b918-442b-9618-a41e9f132f18;
+         ftgl_cookie_id=c0a1f3aba061752ce32334040b51f833;
+         dtCookie=v_4_srv_7_sn_3C4FCED90ECED453AADB736741B11CB7_perc_100000_ol_0_mul_1_app-3Aca312da39d5a5d07_1_app-3A37d82a95eb231749_0_rcs-3Acss_0;
+         qrator_ssid=1691269065.323.yMdYfClKme3yobwG-1mfp87q8v8mlon02q4edqk98mmequv8h;
+         COMPARATOR_TOKEN=GB77xdPkTFeVoqLjLAMlIA==.ZM62qA.EezGAeg2S97L-GKHcrIsfQJ4wgMcK8B7FNiS3N5rrIs
+#+end_src
+
+- ns_session: sets after GET https://api.domclick.ru/core/no-auth-zone/api/v1/ensure_session expires after 1 month
+- ftgl_cookie_id: sets after GET https://ipoteka.domclick.ru/mobile/v1/feature_toggles
+- [[https://www.dynatrace.com/support/help/manage/data-privacy-and-security/data-privacy/cookies][dtCookie]]: sets after GET https://api.domclick.ru/core/no-auth-zone/api/v1/ensure_session
+- qrator_ssid: sets after GET https://api.domclick.ru/core/no-auth-zone/api/v1/ensure_session
+- COMPARATOR_TOKEN: --- not a constant (may be recreates every day)
+
+*** COMPARATOR_TOKEN
+#+begin_src
+1. GB77xdPkTFeVoqLjLAMlIA==.ZM62qA.EezGAeg2S97L-GKHcrIsfQJ4wgMcK8B7FNiS3N5rrIs
+2. jSGzaT55STKpCgiFHiX3iA==.ZM7jFg.pS0N2e689kLt8g7O664toB9Brshr4_CqKHI0IZ9rnWE
+#+end_src
+
+** Endpoints
+| app                                                    | web                              |
+|--------------------------------------------------------+----------------------------------|
+| https://offers-service.domclick.ru/research/v5/offers/ | https://kazan.domclick.ru/search |
+| category=living                                        | category=living                  |
+| offer_type=complex                                     | offer_type=flat                  |
+| ne=55.97610722009936,38.02040060022105                 |                                  |
+| sw=55.52693877990064,37.222275999778944                |                                  |
+| limit=10                                               |                                  |
+|                                                        | aids=1967                        |
+|                                                        | deal_type=sale                   |
+
+** Conclusion
+Для успешного выполнения запроса нужны следующие вещи:
+1. ~X-Service~ header
+1. ~Timestamp~ header
+1. ~User-Agent~ header
+1. ~Hash~ header вычисляемый через ~User-Agent~, ~Timestamp~ и эндпоинт запроса
+1. ~Cookie~ ???? мб надо мб можно просто использовать те что возвращает сервер
