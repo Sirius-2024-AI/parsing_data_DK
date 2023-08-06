@@ -230,5 +230,5 @@ Cookie:  ns_session=bf39afb2-b918-442b-9618-a41e9f132f18;
 1. ~X-Service~ header
 1. ~Timestamp~ header
 1. ~User-Agent~ header
-1. ~Hash~ header: вычисляется через ~User-Agent~, ~Timestamp~ и эндпоинт запроса
+1. ~Hash~ header: вычисляется через ~User-Agent~, ~Timestamp~, соль и эндпоинт запроса
 1. ~Cookie~ все устанавливается после запросов по нужным эндпоинтам
