@@ -10,17 +10,6 @@
 
 ~mitmproxy --mode socks5@8080 --ssl-insecure --set console_mouse=false~
 
-** How to call using curl
-#+begin_src bash
-  curl -X GET \
-       'https://offers-service.domclick.ru/research/v5/offers/\?address\=7b4698a7-f8b8-424c-9195-e24f3ddb88f3\&category\=living\&deal_type\=sale\&ne\=60.4998448896239%2C31.1066907320116&offer_type=flat&offer_type=layout&rooms=1&sale_price_full=1&sw=59.36458019211444%2C29.772280750617085&sort=qi&sort_dir=desc&offset=0&limit=20' \
-       -H "X-Service: mobile/domclick_andr/8.72.0" \
-       -H 'cookie: ns_session=bf39afb2-b918-442b-9618-a41e9f132f18; ftgl_cookie_id=c0a1f3aba061752ce32334040b51f833; dtCookie=v_4_srv_7_sn_3C4FCED90ECED453AADB736741B11CB7_perc_100000_ol_0_mul_1_app-3Aca312da39d5a5d07_1_app-3A37d82a95eb231749_0_rcs-3Acss_0; qrator_ssid=1691269065.323.yMdYfClKme3yobwG-1mfp87q8v8mlon02q4edqk98mmequv8h; COMPARATOR_TOKEN=GB77xdPkTFeVoqLjLAMlIA==.ZM62qA.EezGAeg2S97L-GKHcrIsfQJ4wgMcK8B7FNiS3N5rr' \
-       -H 'User-Agent: Android; 12; Google; sdk_gphone64_arm64; 8.72.0; 8720006; 7d617456-90a1-4c37-b251-696830776882; NONAUTH' \
-       -H 'Timestamp: 1691269796' \
-       -H 'Hash: v1:308cd7c23326fb5c160bd60037c5f0d4'
-#+end_src
-
 ** Headers
 *** Headers example
 hashes allways different :(
