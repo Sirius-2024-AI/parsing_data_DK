@@ -13,8 +13,9 @@ class DomClickApi:
                                      "User-Agent": "Android; 12; Google; google_pixel_5; 8.72.0; 8720006; ; NONAUTH"
                                      })
 
-        print(self.get("https://api.domclick.ru/core/no-auth-zone/api/v1/ensure_session"))
-        print(self.get("https://ipoteka.domclick.ru/mobile/v1/feature_toggles"))
+        # init (get cookies)
+        self.get("https://api.domclick.ru/core/no-auth-zone/api/v1/ensure_session")
+        self.get("https://ipoteka.domclick.ru/mobile/v1/feature_toggles")
 
     def get(self, url, **kwargs):
         self.__update_headers(url, **kwargs)
