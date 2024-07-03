@@ -47,12 +47,13 @@ def pprint_json(json_str):
     except:
         print(json_str)
 
+##you need only this block
 
 offers_url = 'https://geo-service.domclick.ru/research/api/v1/autocomplete/regions'
 list = ["Москва", ]
 dca = DomClickApi()
 res = dca.get(offers_url, params={
-    "name": "Москва"
+    "name": "Москва"  #<<-- you regione str
 })
 print("RES:", res)
 print(res.text)
