@@ -49,44 +49,13 @@ def pprint_json(json_str):
 
 
 offers_url = 'https://offers-service.domclick.ru/research/v5/offers/'
-count_url = 'https://offers-service.domclick.ru/research/v5/offers/count/'
+count_url = 'https://geo-service.domclick.ru/research/api/v1/autocomplete/regions'
 
 dca = DomClickApi()
 res = dca.get(count_url, params={
-    "address": "26f533ee-f4c6-4fd8-9cb5-a1910250622e",
-    "deal_type": "sale",
-    "category": "living",
-    "offer_type": ["flat", "layout"],
-    "rooms": ["1", "2"],
-    "area__gte": 50,
-    "floor__gte": 7,
+    "name": "Москва"
 })
 print("RES:", res)
 print(res.text)
 pprint_json(res.text)
 
-count_obj = json.loads(res.text)
-total = count_obj["pagination"]["total"]
-
-offset = 0
-while offset < total:
-    res = dca.get(offers_url, params={
-        "address": "26f533ee-f4c6-4fd8-9cb5-a1910250622e",
-        "deal_type": "sale",
-        "category": "living",
-        "offer_type": ["flat", "layout"],
-        "rooms": ["1", "2"],
-        "area__gte": 50,
-        "floor__gte": 7,
-
-        "sort": "qi",
-        "sort_dir": "desc",
-        "offset": offset,
-        "limit": 30,
-    })
-    print("RES:", res)
-    pprint_json(res.text)
-    offset += 30
-    offers_obj = json.loads(res.text)
-    total = offers_obj["pagination"]["total"]
-    print(f"{offset}/{total}")
