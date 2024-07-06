@@ -1,5 +1,5 @@
 
-![Logo](https://github.com/Sirius-2024-AI/parsing_data_DK/img/logo.png/)
+![Logo](https://github.com/Sirius-2024-AI/parsing_data_DK/blob/main/img/logo.png)
 
 # **Parser data from DomClick**
 
