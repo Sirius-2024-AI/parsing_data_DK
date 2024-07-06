@@ -3,3 +3,4 @@ sshgit.pub
 temp.py
 .idea
 CONFIG.py
+__pycache__
