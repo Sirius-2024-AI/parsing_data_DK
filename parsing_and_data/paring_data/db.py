@@ -1,8 +1,7 @@
 import psycopg2
 from psycopg2 import Error
-from CONFIG import *
 
-def tobd(list):
+def tobd(list, database, user, password, host, port):
     try:
         connection = psycopg2.connect(database=database,
                                         user=user,
