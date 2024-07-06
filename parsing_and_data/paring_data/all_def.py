@@ -105,9 +105,9 @@ def main_parser_fn(addresse, database, user, password, host, port):
                                 #print("RES:", res)
                                 offers_obj = json.loads(res.text)
                                 result_data = offers_obj['result']
-                                print(res.text)
+                                #print(res.text)
                                 items = result_data['items']
-                                print(items)
+                                #print(items)
                                 for item in items:
                                     address = item['address']
                                     price = item['price_info']
