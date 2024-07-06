@@ -5,3 +5,5 @@ temp.py
 CONFIG.py
 __pycache__
 paring_data/__pycache__
+*.txt
+*.pyc
