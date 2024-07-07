@@ -25,7 +25,7 @@ else:
     f = list(f.read().split(","))
     for i in f:
         print(i)
-        main_parser_fn(get_guid_of_regione(i), str(args.dbname), str(args.dbuser), str(args.dbpaswd), str(args.dbhost), int(args.dbport))
+        main_parser_fn(get_guid_of_regione(i), str(args.dbname), str(args.dbuser), str(args.dbpaswd), str(args.dbhost), int(args.dbport), str(args.tablename))
         print("Finish parsing: {i}")
 
 
