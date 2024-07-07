@@ -137,7 +137,7 @@ def main_parser_fn(addresse, database, user, password, host, port):#, database, 
                                                     )
                                                 
                                                 tobd(row, database, user, password, host, port)                        
-                                        except ConnectionError:
+                                        except:
                                             print("error")
                                             continue
     return 0                    
