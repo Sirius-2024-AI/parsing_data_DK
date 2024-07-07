@@ -1,5 +1,5 @@
 import psycopg2
-from psycopg2 import Error
+from psycopg2 import *
 
 def tobd(list, database, user, password, host, port):
     try:
@@ -15,13 +15,12 @@ def tobd(list, database, user, password, host, port):
 
         cursor.execute(insert_query)
         connection.commit()
-        #print("y")
-    except (Exception, Error) as error:
+
+    except (Exception, Error, OperationalError) as error:
         print(error)
     finally:
         if connection:
             cursor.close()
             connection.close()
-            #print("y")
-    #print("y")
+
     return 0

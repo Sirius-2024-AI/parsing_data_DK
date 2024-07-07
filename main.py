@@ -20,3 +20,4 @@ city = list(city.read().split(","))
 for i in city:
     print(i)
     main_parser_fn(get_guid_of_regione(i), str(args.dbname), str(args.dbuser), str(args.dbpaswd), str(args.dbhost), int(args.dbport))
+    print("Finish parsing: {i}")
