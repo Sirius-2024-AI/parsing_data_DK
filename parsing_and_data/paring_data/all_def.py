@@ -54,31 +54,27 @@ def get_guid_of_regione(regione) -> str:
     })
     count_obj = json.loads(res.text)
     print(count_obj['answer']['items'][0]['guid'])
-    
     return count_obj['answer']['items'][0]['guid']
 
-def main_parser_fn(addresse, database, user, password, host, port):#, database, user, password, host, port):    
+def main_parser_fn(addresse, database, user, password, host, port, tablename):#, database, user, password, host, port):    
     #main params
     offset = 0
     remont = ["standard", "design", "office_finishing", "simple", "required_cosmetic", "required_repair", "well_done", "without_repair"] #without_repair design standard well_done
     balcons = [1, 2]
-    rooms = ["st", "1", "2", "3", "4"]
+    rooms = ["1", "st", "2", "3", "4"]
     type_dome = ["layout", "flat"] 
-    cargo_lift=  [0, 1]
-    pass_lift = [0, 1]
     wide_from_winow = ['garden', 'park', 'water', 'forest', 'street']
     perec = ["brick", "wood", "monolith", "panel", "block", "brick_monolith", "shield", "frame", "foamed_block", "gaz_block", "metal"]
     offers_url = "https://offers-service.domclick.ru/research/v5/offers/"
     count_url = "https://offers-service.domclick.ru/research/v5/offers/count/"
     dca = DomClickApi()
-    for year in range(2024, 1950, -1):
+    for room in rooms:
         for vid in wide_from_winow:
             for type in perec:
-                for room in rooms:
+                for balcon in balcons:
                     for sd in type_dome:
                         for rem in remont:
-                            for balcon in balcons:
-                                        #print(year)
+                            for year in range(2024, 1950, -1):
                                         req = dca.get(count_url, params={
                                             "address": addresse,
                                             "deal_type": "sale",
@@ -96,7 +92,8 @@ def main_parser_fn(addresse, database, user, password, host, port):#, database, 
                                         count_obj = json.loads(req.text)
                                         total = count_obj["pagination"]["total"]
                                         #print(count_obj['result'])
-
+                                        print(f"finishing searching total args for: {year}")
+                                        print(total)
                                         for offset in range(0, total, 1):
                                             try: 
                                                 res = dca.get(offers_url, params={
@@ -114,7 +111,7 @@ def main_parser_fn(addresse, database, user, password, host, port):#, database, 
                                                             "renovation": rem,
                                                             "balconies": balcon, 
                                                 })
-                                                #print("RES:", res.text)
+                                                print("RES:", res)
                                                 offers_obj = json.loads(res.text)
                                                 result_data = offers_obj["result"]
                                                 items = result_data["items"]
@@ -142,7 +139,7 @@ def main_parser_fn(addresse, database, user, password, host, port):#, database, 
                                                         year,
                                                         )
                                                     #print(row)
-                                                    tobd(row, database, user, password, host, port)                        
+                                                    tobd(row, database, user, password, host, port, tablename)                        
                                             except:
                                                 print("error")
                                                 continue
