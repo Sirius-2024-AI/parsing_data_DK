@@ -10,13 +10,13 @@ If you need data about apartments to train ML to predict real estate prices, the
 install requirements.txt by pip 
 
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
     
 ## Usage
 
-```
-python main.py --dbname --dbuser --dbpaswd --dbhost --dbport --city example.txt
+```bash
+python3 main.py --dbname <database_name> --dbuser <user> --dbpaswd <password> --dbhost <host> --dbport <port> --city <file_of_cities>
 ```
 
 
