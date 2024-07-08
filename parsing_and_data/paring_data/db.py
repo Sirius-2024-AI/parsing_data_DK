@@ -17,7 +17,7 @@ def tobd(list, database, user, password, host, port, tablename):
         connection.commit()
 
     except (Exception, Error, OperationalError) as error:
-        print(error)
+        pass
     finally:
         if connection:
             cursor.close()

@@ -72,10 +72,7 @@ def parser(addresse, database, user, password, host, port, tablename, offers_url
             total = count_obj["pagination"]["total"]
             #print(count_obj['result'])
             #print(total)
-            if total == 0:
-                pass
-            else:
-                for offset in range(0, total, 1):
+            for offset in range(0, total, 1):
                     res = dca.get(offers_url, params={
                                                             "address": addresse,
                                                             "deal_type": "sale",
@@ -89,7 +86,7 @@ def parser(addresse, database, user, password, host, port, tablename, offers_url
                                                             "renovation": rem,
                                                             "balconies": balcon, 
                                                         })
-                    print("RES:", res)
+                    #print("RES:", res)
                     offers_obj = json.loads(res.text)
                     result_data = offers_obj["result"]
                     items = result_data["items"]
@@ -116,11 +113,11 @@ def parser(addresse, database, user, password, host, port, tablename, offers_url
                                     description,)
                                     #print(row)
                         tobd(row, database, user, password, host, port, tablename)  
-                        print("add to db")                      
+                        #print("add to db")                      
     except:
-        print("error")
-                #continue
-
+        #print("error")
+        pass  #continue
+    return total
 def main_parser_fn(addresse, database, user, password, host, port, tablename):#, database, user, password, host, port):    
     #main params
     percents = 0
@@ -138,8 +135,6 @@ def main_parser_fn(addresse, database, user, password, host, port, tablename):#,
                 for balcon in balcons:
                     for sd in type_dome:
                         for rem in remont:
-                            print('\rCompleted: {}%'.format(percents), end='')
-                            percents =+ 1
-                            parser(addresse, database, user, password, host, port, tablename, offers_url, count_url, DomClickApi(), vid, rem, sd, room, balcon, type)
-
+                            percents += parser(addresse, database, user, password, host, port, tablename, offers_url, count_url, DomClickApi(), vid, rem, sd, room, balcon, type)
+                            print('\rNAYDENO: {}'.format(percents), end='')
     return 0                    
