@@ -1,6 +1,7 @@
 import json
 import requests
 import hashlib
+from bs4 import BeautifulSoup
 from datetime import datetime
 from parsing_and_data.paring_data.db import tobd
 
@@ -42,6 +43,14 @@ class DomClickApi:
         p = requests.models.PreparedRequest()
         p.prepare(method="GET", url=url, **kwargs)
         return p.url
+    
+def get_extra_data_god(dca, ui):
+    res = dca.get(f"https://domclick.ru/card/sale__flat__{ui}", params={})
+    soup = BeautifulSoup(res.content, 'html.parser')
+    s = soup.findAll('section', class_="EBeSC")
+    for d in s:
+        f = d.find('span', class_="ffG_w")
+        return f.text
 
 def get_guid_of_regione(regione) -> str:
     offers_url = 'https://geo-service.domclick.ru/research/api/v1/autocomplete/regions'
@@ -53,7 +62,7 @@ def get_guid_of_regione(regione) -> str:
     print(count_obj['answer']['items'][0]['guid'])
     return count_obj['answer']['items'][0]['guid']
 
-def parser(addresse, database, user, password, host, port, tablename, offers_url, count_url, dca, vid, rem, sd, room, balcon, typy):
+def parser(addresse, database, user, password, host, port, tablename, offers_url, count_url, dca, vid, rem, room, balcon, typyc):
     offset = 0
     try:
             req = dca.get(count_url, params={
@@ -61,10 +70,10 @@ def parser(addresse, database, user, password, host, port, tablename, offers_url
                 "deal_type": "sale",
                 "category": "living",
                 "window_view": vid,
-                "offer_type": [sd],
+                "offer_type": ['flat'],
                 "renovation": rem,
                 "rooms": room,  
-                "wall_type": typy,
+                "wall_type": typyc,
                 "balconies": balcon
             })
                                             
@@ -77,12 +86,12 @@ def parser(addresse, database, user, password, host, port, tablename, offers_url
                                                             "address": addresse,
                                                             "deal_type": "sale",
                                                             "category": "living",
-                                                            "offer_type": [sd],
+                                                            "offer_type": ['flat'],
                                                             "window_view": vid,
                                                             "offset": offset,
                                                             "limit": 1,
                                                             "rooms": room,
-                                                            "wall_type": typy,
+                                                            "wall_type": typyc,
                                                             "renovation": rem,
                                                             "balconies": balcon, 
                                                         })
@@ -90,13 +99,14 @@ def parser(addresse, database, user, password, host, port, tablename, offers_url
                     offers_obj = json.loads(res.text)
                     result_data = offers_obj["result"]
                     items = result_data["items"]
+                    
                     #print(items)
                     for item in items:
                         address = item['address']
                         price = item['price_info']
                         house = item['house']
+                        url = item['id']
                         object_info = item['object_info']
-                        description = item['description']
                         row = (
                                     address['name'],
                                     price['price'],
@@ -105,13 +115,14 @@ def parser(addresse, database, user, password, host, port, tablename, offers_url
                                     object_info['rooms'],
                                     object_info['area'],
                                     address['locality']['name'],
-                                    sd,
+                                    'flat',
                                     rem,
                                     balcon,
-                                    address['guid'],
+                                    url,
                                     vid,
-                                    description,)
-                                    #print(row)
+                                    '0',
+                                    get_extra_data_god(DomClickApi(), url))
+                        print(row)
                         tobd(row, database, user, password, host, port, tablename)  
                         #print("add to db")                      
     except:
@@ -124,17 +135,15 @@ def main_parser_fn(addresse, database, user, password, host, port, tablename):#,
     remont = ["standard", "design", "office_finishing", "simple", "required_cosmetic", "required_repair", "well_done", "without_repair"] #without_repair design standard well_done
     balcons = [1, 2]
     rooms = ["1", "st", "2", "3", "4"]
-    type_dome = ["layout", "flat"] 
     wide_from_winow = ['garden', 'park', 'water', 'forest', 'street']
     perec = ["brick", "wood", "monolith", "panel", "block", "brick_monolith", "shield", "frame", "foamed_block", "gaz_block", "metal"]
     offers_url = "https://offers-service.domclick.ru/research/v5/offers/"
     count_url = "https://offers-service.domclick.ru/research/v5/offers/count/"
     for room in rooms:
         for vid in wide_from_winow:
-            for type in perec:
+            for typec in perec:
                 for balcon in balcons:
-                    for sd in type_dome:
                         for rem in remont:
-                            percents += parser(addresse, database, user, password, host, port, tablename, offers_url, count_url, DomClickApi(), vid, rem, sd, room, balcon, type)
+                            percents += parser(addresse, database, user, password, host, port, tablename, offers_url, count_url, DomClickApi(), vid, rem, room, balcon, typec)
                             print('\rNAYDENO: {}'.format(percents), end='')
     return 0                    

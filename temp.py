@@ -2,6 +2,7 @@ import json
 import requests
 import hashlib
 from datetime import datetime
+from bs4 import BeautifulSoup
 from parsing_and_data.paring_data.db import tobd
 
 class DomClickApi:
@@ -53,88 +54,84 @@ def get_guid_of_regione(regione) -> str:
     print(count_obj['answer']['items'][0]['guid'])
     return count_obj['answer']['items'][0]['guid']
 
-def parser(addresse, database, user, password, host, port, tablename, offers_url, count_url, dca, vid, rem, sd, room, balcon, typy):
+def get_data_a(dca, uri, addres):        
+    res = dca.get(uri, params={
+                                "address": addres,
+                                "deal_type": "sale",
+                                "category": "living",
+                                "offer_type": ['flat'],
+                                })
+    return res
+
+def get_data_b(dca, uri, addres, offset):        
+    res = dca.get(uri, params={
+                                "address": addres,
+                                "deal_type": "sale",
+                                "category": "living",
+                                "offer_type": ['flat'],
+                                "offset": offset
+                                })
+    return res
+
+def get_extra_data_god(dca, ui):
+    res = dca.get(f"https://domclick.ru/card/sale__flat__{ui}", params={})
+    soup = BeautifulSoup(res.content, 'html.parser')
+    s = soup.findAll('section', class_="EBeSC")
+    for d in s:
+        f = d.find('span', class_="ffG_w")
+        return f.text
+
+def get_extra_data_rem(dca, ui):
+    res = dca.get(f"https://domclick.ru/card/sale__flat__{ui}", params={})
+    soup = BeautifulSoup(res.content, 'html.parser')
+    s = soup.findAll('section', class_="product-page__section")
+    for d in s:
+        f = d.find('span', class_="ffG_w")
+        return f.text
+
+
+def parser(addresse, database, user, password, host, port, tablename, offers_url, count_url, dca):
     offset = 0
-    try:
-            req = dca.get(count_url, params={
-                "address": addresse,
-                "deal_type": "sale",
-                "category": "living",
-                "window_view": vid,
-                "offer_type": [sd],
-                "renovation": rem,
-                "rooms": room,  
-                "wall_type": typy,
-                "balconies": balcon
-            })
-                                            
-            count_obj = json.loads(req.text)
-            total = count_obj["pagination"]["total"]
+
+    req = get_data_a(DomClickApi(), count_url, addresse)
+    #print(req.txt)                
+    count_obj = json.loads(req.text)
+    total = count_obj["pagination"]["total"]
             #print(count_obj['result'])
             #print(total)
-            for offset in range(0, total, 1):
-                    res = dca.get(offers_url, params={
-                                                            "address": addresse,
-                                                            "deal_type": "sale",
-                                                            "category": "living",
-                                                            "offer_type": [sd],
-                                                            "window_view": vid,
-                                                            "offset": offset,
-                                                            "limit": 1,
-                                                            "rooms": room,
-                                                            "wall_type": typy,
-                                                            "renovation": rem,
-                                                            "balconies": balcon, 
-                                                        })
-                    #print("RES:", res)
-                    offers_obj = json.loads(res.text)
-                    result_data = offers_obj["result"]
-                    items = result_data["items"]
-                    #print(items)
-                    for item in items:
-                        address = item['address']
-                        price = item['price_info']
-                        house = item['house']
-                        object_info = item['object_info']
-                        description = item['description']
-                        row = (
-                                    address['name'],
-                                    price['price'],
-                                    object_info['floor'],
-                                    house['floors'],
-                                    object_info['rooms'],
-                                    object_info['area'],
-                                    address['locality']['name'],
-                                    sd,
-                                    rem,
-                                    balcon,
-                                    address['guid'],
-                                    vid,
-                                    description,)
-                                    #print(row)
-                        tobd(row, database, user, password, host, port, tablename)  
-                        #print("add to db")                      
-    except:
-        #print("error")
-        pass  #continue
+    for offset in range(0, 1, 1):
+        res = get_data_b(DomClickApi(), offers_url, addresse, offset)
+                    
+        offers_obj = json.loads(res.text)
+        result_data = offers_obj["result"]
+        items = result_data["items"]
+        #print(res.text)
+        for item in items:
+            address = item['address']
+            price = item['price_info']
+            house = item['house']
+            object_info = item['object_info']
+            url = item['id']
+            row = (
+                   address['name'],
+                   price['price'],
+                   object_info['floor'],
+                   house['floors'],
+                   object_info['rooms'],
+                   object_info['area'],
+                   address['locality']['name'],
+                   get_extra_data_god(DomClickApi(), url),
+                   get_extra_data_rem(DomClickApi(), url),
+                   )
+                    #                )#print(row)
+                    #    tobd(row, database, user, password, host, port, tablename)  
+            print(row)                      
+
     return total
 def main_parser_fn(addresse, database, user, password, host, port, tablename):#, database, user, password, host, port):    
     #main params
-    percents = 0
-    remont = ["standard", "design", "office_finishing", "simple", "required_cosmetic", "required_repair", "well_done", "without_repair"] #without_repair design standard well_done
-    balcons = [1, 2]
-    rooms = ["1", "st", "2", "3", "4"]
-    type_dome = ["layout", "flat"] 
-    wide_from_winow = ['garden', 'park', 'water', 'forest', 'street']
-    perec = ["brick", "wood", "monolith", "panel", "block", "brick_monolith", "shield", "frame", "foamed_block", "gaz_block", "metal"]
     offers_url = "https://offers-service.domclick.ru/research/v5/offers/"
     count_url = "https://offers-service.domclick.ru/research/v5/offers/count/"
-    for room in rooms:
-        for vid in wide_from_winow:
-            for type in perec:
-                for balcon in balcons:
-                    for sd in type_dome:
-                        for rem in remont:
-                            percents += parser(addresse, database, user, password, host, port, tablename, offers_url, count_url, DomClickApi(), vid, rem, sd, room, balcon, type)
-                            print('\rNAYDENO: {}'.format(percents), end='')
+    percents = parser(addresse, database, user, password, host, port, tablename, offers_url, count_url, DomClickApi())
+    print('\rNAYDENO: {}'.format(percents), end='')
     return 0                    

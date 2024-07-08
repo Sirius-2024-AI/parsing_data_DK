@@ -1,4 +1,4 @@
-from temp import *
+from parsing_and_data.paring_data.all_def import *
 import argparse
 
 parser = argparse.ArgumentParser(
@@ -19,14 +19,14 @@ args = parser.parse_args()
 try:
     if args.city is None:
         main_parser_fn(get_guid_of_regione(args.town), str(args.dbname), str(args.dbuser), str(args.dbpaswd), str(args.dbhost), int(args.dbport), str(args.tablename))
-        print("Finish parsing: {args.town}")
+        #print("Finish parsing: {args.town}")
     else:
         f = open(args.city, 'r', encoding="utf-8")
         f = list(f.read().split(","))
         for i in f:
             print(i)
             main_parser_fn(get_guid_of_regione(i), str(args.dbname), str(args.dbuser), str(args.dbpaswd), str(args.dbhost), int(args.dbport), str(args.tablename))
-            print("Finish parsing: {i}")
+            #print("Finish parsing: {i}")
 except Exception as e:
     print(e)
 
