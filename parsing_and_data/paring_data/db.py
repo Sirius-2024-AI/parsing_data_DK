@@ -11,7 +11,7 @@ def tobd(list, database, user, password, host, port, tablename):
             
         cursor = connection.cursor()
         
-        insert_query = f"""INSERT INTO {tablename} (address, price, floor, total_floors, rooms, area, city, home_type, remont, balcon, url, view_window, description, build_year) VALUES {list}"""
+        insert_query = f"""INSERT INTO {tablename} (address, price, floor, total_floors, rooms, area, city, home_type, remont, balcon, url, view_window, description) VALUES {list}"""
 
         cursor.execute(insert_query)
         connection.commit()
