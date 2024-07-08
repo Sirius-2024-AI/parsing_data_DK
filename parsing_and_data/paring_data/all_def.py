@@ -56,7 +56,6 @@ def get_guid_of_regione(regione) -> str:
 def parser(addresse, database, user, password, host, port, tablename, offers_url, count_url, dca, vid, rem, sd, room, balcon, typy):
     offset = 0
     try:
-        for year in range(2024, 1950, -1):
             req = dca.get(count_url, params={
                 "address": addresse,
                 "deal_type": "sale",
@@ -65,8 +64,6 @@ def parser(addresse, database, user, password, host, port, tablename, offers_url
                 "offer_type": [sd],
                 "renovation": rem,
                 "rooms": room,  
-                "build_year__gte": year,
-                "build_year__lte": year,
                 "wall_type": typy,
                 "balconies": balcon
             })
@@ -74,59 +71,59 @@ def parser(addresse, database, user, password, host, port, tablename, offers_url
             count_obj = json.loads(req.text)
             total = count_obj["pagination"]["total"]
             #print(count_obj['result'])
-            print(f"finishing searching total args for: {year}")
-            print(total)
-            for offset in range(0, total, 1):
-                res = dca.get(offers_url, params={
-                                                        "address": addresse,
-                                                        "deal_type": "sale",
-                                                        "category": "living",
-                                                        "offer_type": [sd],
-                                                        "window_view": vid,
-                                                        "offset": offset,
-                                                        "limit": 20,
-                                                        "rooms": room,
-                                                        "build_year__gte": year,
-                                                        "build_year__lte": year,
-                                                        "wall_type": typy,
-                                                        "renovation": rem,
-                                                        "balconies": balcon, 
-                                                    })
-                print("RES:", res)
-                offers_obj = json.loads(res.text)
-                result_data = offers_obj["result"]
-                items = result_data["items"]
-                #print(items)
-                for item in items:
-                    address = item['address']
-                    price = item['price_info']
-                    house = item['house']
-                    object_info = item['object_info']
-                    description = item['description']
-                    row = (
-                                address['name'],
-                                price['price'],
-                                object_info['floor'],
-                                house['floors'],
-                                object_info['rooms'],
-                                object_info['area'],
-                                address['locality']['name'],
-                                sd,
-                                rem,
-                                balcon,
-                                address['guid'],
-                                vid,
-                                description,
-                                year,)
-                                #print(row)
-                    tobd(row, database, user, password, host, port, tablename)                        
+            #print(total)
+            if total == 0:
+                pass
+            else:
+                for offset in range(0, total, 1):
+                    res = dca.get(offers_url, params={
+                                                            "address": addresse,
+                                                            "deal_type": "sale",
+                                                            "category": "living",
+                                                            "offer_type": [sd],
+                                                            "window_view": vid,
+                                                            "offset": offset,
+                                                            "limit": 1,
+                                                            "rooms": room,
+                                                            "wall_type": typy,
+                                                            "renovation": rem,
+                                                            "balconies": balcon, 
+                                                        })
+                    print("RES:", res)
+                    offers_obj = json.loads(res.text)
+                    result_data = offers_obj["result"]
+                    items = result_data["items"]
+                    #print(items)
+                    for item in items:
+                        address = item['address']
+                        price = item['price_info']
+                        house = item['house']
+                        object_info = item['object_info']
+                        description = item['description']
+                        row = (
+                                    address['name'],
+                                    price['price'],
+                                    object_info['floor'],
+                                    house['floors'],
+                                    object_info['rooms'],
+                                    object_info['area'],
+                                    address['locality']['name'],
+                                    sd,
+                                    rem,
+                                    balcon,
+                                    address['guid'],
+                                    vid,
+                                    description,)
+                                    #print(row)
+                        tobd(row, database, user, password, host, port, tablename)  
+                        print("add to db")                      
     except:
         print("error")
                 #continue
 
 def main_parser_fn(addresse, database, user, password, host, port, tablename):#, database, user, password, host, port):    
     #main params
-
+    percents = 0
     remont = ["standard", "design", "office_finishing", "simple", "required_cosmetic", "required_repair", "well_done", "without_repair"] #without_repair design standard well_done
     balcons = [1, 2]
     rooms = ["1", "st", "2", "3", "4"]
@@ -141,6 +138,8 @@ def main_parser_fn(addresse, database, user, password, host, port, tablename):#,
                 for balcon in balcons:
                     for sd in type_dome:
                         for rem in remont:
+                            print('\rCompleted: {}%'.format(percents), end='')
+                            percents =+ 1
                             parser(addresse, database, user, password, host, port, tablename, offers_url, count_url, DomClickApi(), vid, rem, sd, room, balcon, type)
 
     return 0                    
