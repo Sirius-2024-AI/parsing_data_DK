@@ -1,4 +1,4 @@
-from parsing_and_data.paring_data.all_def import *
+from temp import *
 import argparse
 
 parser = argparse.ArgumentParser(
