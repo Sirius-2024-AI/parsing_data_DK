@@ -81,13 +81,14 @@ def get_extra_data_god(dca, ui):
         f = d.find('span', class_="ffG_w")
         return f.text
 
-def get_extra_data_rem(dca, ui):
+def get_extra_data_balcon(dca, ui):
     res = dca.get(f"https://domclick.ru/card/sale__flat__{ui}", params={})
     soup = BeautifulSoup(res.content, 'html.parser')
-    s = soup.findAll('section', class_="product-page__section")
-    for d in s:
-        f = d.find('span', class_="ffG_w")
-        return f.text
+    
+    repair_item = soup.find('li', {'data-e2e-id': "Количество балконов"})
+    repair_value = repair_item.find('span', {'class': 'ffG_w', 'data-e2e-id': 'Значение'}).text.strip()
+
+    return repair_value
 
 
 def parser(addresse, database, user, password, host, port, tablename, offers_url, count_url, dca):
@@ -121,7 +122,7 @@ def parser(addresse, database, user, password, host, port, tablename, offers_url
                    object_info['area'],
                    address['locality']['name'],
                    get_extra_data_god(DomClickApi(), url),
-                   get_extra_data_rem(DomClickApi(), url),
+                   get_extra_data_balcon(DomClickApi(), url),
                    )
                     #                )#print(row)
                     #    tobd(row, database, user, password, host, port, tablename)  
@@ -135,3 +136,5 @@ def main_parser_fn(addresse, database, user, password, host, port, tablename):#,
     percents = parser(addresse, database, user, password, host, port, tablename, offers_url, count_url, DomClickApi())
     print('\rNAYDENO: {}'.format(percents), end='')
     return 0                    
+
+print(get_extra_data_balcon(DomClickApi(), 1695506011))
