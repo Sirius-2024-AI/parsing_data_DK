@@ -6,7 +6,6 @@ from multiprocessing import *
 from queue import Queue
 import traceback
 from threading import Thread
-from bs4 import BeautifulSoup
 from datetime import datetime
 
 class DomClickApi:
@@ -48,22 +47,6 @@ class DomClickApi:
         p.prepare(method="GET", url=url, **kwargs)
         return p.url
     
-
-def get_extra_data_god(dca, ui):
-    res = dca.get(f"https://domclick.ru/card/sale__flat__{ui}", params={})
-    soup = BeautifulSoup(res.content, 'html.parser')
-    s = soup.findAll('section', class_="EBeSC")
-    for d in s:
-        f = d.find('span', class_="ffG_w")
-        return f.text
-
-def get_extra_data_balcon(dca, ui):
-    res = dca.get(f"https://domclick.ru/card/sale__flat__{ui}", params={})
-    soup = BeautifulSoup(res.content, 'html.parser')
-    repair_item = soup.find('li', {'data-e2e-id': "Количество балконов"})
-    repair_value = repair_item.find('span', {'class': 'ffG_w', 'data-e2e-id': 'Значение'}).text.strip()
-
-    return repair_value
 
 def get_guid_of_regione(regione) -> str:
     offers_url = 'https://geo-service.domclick.ru/research/api/v1/autocomplete/regions'
