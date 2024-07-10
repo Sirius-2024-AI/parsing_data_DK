@@ -1,9 +1,13 @@
 import json
 import requests
 import hashlib
+import pandas as pd
+from multiprocessing import *
+from queue import Queue
+import traceback
+from threading import Thread
 from bs4 import BeautifulSoup
 from datetime import datetime
-from parsing_and_data.paring_data.db import tobd
 
 class DomClickApi:
     def __init__(self):
@@ -71,8 +75,9 @@ def get_guid_of_regione(regione) -> str:
     print(count_obj['answer']['items'][0]['guid'])
     return count_obj['answer']['items'][0]['guid']
 
-def parser(addresse, database, user, password, host, port, tablename, offers_url, count_url, dca, vid, rem, room, balcon, typyc):
+def parser(addresse, offers_url, count_url, dca, vid, rem, room, balcon, typyc, file):
     offset = 0
+    dataset = []
     try:
             req = dca.get(count_url, params={
                 "address": addresse,
@@ -116,29 +121,31 @@ def parser(addresse, database, user, password, host, port, tablename, offers_url
                         house = item['house']
                         url = item['id']
                         object_info = item['object_info']
-                        row = (
-                                    address['name'],
-                                    price['price'],
-                                    object_info['floor'],
-                                    house['floors'],
-                                    object_info['rooms'],
-                                    object_info['area'],
-                                    address['locality']['name'],
-                                    'flat',
-                                    rem,
-                                    balcon,
-                                    url,
-                                    vid,
-                                    '0',
-                                    get_extra_data_god(DomClickApi(), url))
+                        row = {
+                                "address": address['name'],
+                                "price": price['price'],
+                                "floor": object_info['floor'],
+                                "house": house['floors'],
+                                "rooms": object_info['rooms'],
+                                "area": object_info['area'],
+                                "name": address['locality']['name'],
+                                "remont": rem,
+                                "balcon": balcon,
+                                "url": url,
+                                "vid": vid,
+                                
+                        }
+                        dataset.append(row)
                         #print(row)
-                        tobd(row, database, user, password, host, port, tablename)  
-                        #print("add to db")                      
-    except:
-        #print("error")
-        pass  #continue
-    return total
-def main_parser_fn(addresse, database, user, password, host, port, tablename):#, database, user, password, host, port):    
+                        #tobd(row, database, user, password, host, port, tablename)  
+                        #print("add to db")
+            df = pd.DataFrame(dataset)      
+            df.to_csv(file, mode='a', header=False)       
+    except Exception:
+        print(traceback.format_exc())
+        
+
+def main_parser_fn(addresse, file):#, database, user, password, host, port):    
     #main params
     percents = 0
     remont = ["standard", "design", "office_finishing", "simple", "required_cosmetic", "required_repair", "well_done", "without_repair"] #without_repair design standard well_done
@@ -153,6 +160,6 @@ def main_parser_fn(addresse, database, user, password, host, port, tablename):#,
             for typec in perec:
                 for balcon in balcons:
                         for rem in remont:
-                            percents += parser(addresse, database, user, password, host, port, tablename, offers_url, count_url, DomClickApi(), vid, rem, room, balcon, typec)
-                            print('\rNAYDENO: {}'.format(percents), end='')
-    return 0                    
+                            parser(addresse, offers_url, count_url, DomClickApi(), vid, rem, room, balcon, typec, file)
+                            
+
