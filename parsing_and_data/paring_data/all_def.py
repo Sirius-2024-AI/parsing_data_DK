@@ -73,7 +73,7 @@ def parser(addresse, offers_url, count_url, dca, vid, rem, room, balcon, typyc, 
                 "wall_type": typyc,
                 "balconies": balcon
             })
-                                            
+            print(req)                            
             count_obj = json.loads(req.text)
             total = count_obj["pagination"]["total"]
             #print(count_obj['result'])
@@ -125,7 +125,8 @@ def parser(addresse, offers_url, count_url, dca, vid, rem, room, balcon, typyc, 
             df = pd.DataFrame(dataset)      
             df.to_csv(file, mode='a', header=False)       
     except Exception:
-        print(traceback.format_exc())
+        pass
+        #print(traceback.format_exc())
         
 
 def main_parser_fn(addresse, file):#, database, user, password, host, port):    
@@ -145,4 +146,3 @@ def main_parser_fn(addresse, file):#, database, user, password, host, port):
                         for rem in remont:
                             parser(addresse, offers_url, count_url, DomClickApi(), vid, rem, room, balcon, typec, file)
                             
-
