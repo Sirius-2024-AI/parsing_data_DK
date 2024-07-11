@@ -116,6 +116,7 @@ def parser(addresse, offers_url, count_url, dca, vid, rem, room, balcon, typyc, 
                                 "balcon": balcon,
                                 "url": url,
                                 "vid": vid,
+                                "wall_type": typyc,
                                 
                         }
                         dataset.append(row)

@@ -7,3 +7,4 @@ __pycache__
 paring_data/__pycache__
 *.txt
 *.pyc
+*.csv

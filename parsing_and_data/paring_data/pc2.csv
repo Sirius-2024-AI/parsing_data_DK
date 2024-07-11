@@ -1,4 +1,4 @@
-id,address,price,floor,total_floor,rooms,square,city,remont,balcon,uid,view,year
+id,address,price,floor,total_floor,rooms,square,city,remont,balcon,uid,view,year,type_perec,hot_water,fundament,kitchen
 0,"бульвар Гусева, 57",4150000,7,14,1,38.7,Тверь,standard,1,2058968711,garden
 1,"улица Благоева, 3к3",3320000,1,5,1,33.8,Тверь,standard,1,2058538048,garden
 2,"улица Хромова, 14",2850000,3,3,1,31.0,Тверь,standard,1,1795881805,garden

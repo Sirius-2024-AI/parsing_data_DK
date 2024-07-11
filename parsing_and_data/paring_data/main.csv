@@ -1,4 +1,4 @@
-id,address,price,floor,total_floor,rooms,square,city,remont,balcon,uid,view,year
+id,address,price,floor,total_floor,rooms,square,city,remont,balcon,uid,view,year,type_perec
 0,"Выборгская улица, 8",10680000,1,9,1,35.0,Москва,standard,1,2056866171,garden
 0,"Выборгская улица, 8",10680000,1,9,1,35.0,Москва,standard,1,2056866171,garden
 1,"улица Гурьянова, 9",12990000,3,12,1,40.5,Москва,standard,1,2058752717,garden
