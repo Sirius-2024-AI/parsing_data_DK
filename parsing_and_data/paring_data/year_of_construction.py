@@ -12,7 +12,7 @@ import numpy as np
 
 dca = DomClickApi()
 
-df = pd.read_csv("pc2.csv").drop(labels=["id"], axis=1)
+df = pd.read_csv(r"C:\Users\danii\domclick-parser\parsing_and_data\paring_data\pc2.csv").drop(labels=["id"], axis=1)
 
 def get_extra_data(ui):
     dca = DomClickApi()
@@ -36,7 +36,7 @@ def get_extra_data(ui):
         kitchen = p5.find('span', {'data-e2e-id': 'Значение'}).text if p5 else 0
         return year, type_perec, hot_water, fundament, kitchen
     except:
-        pass 
+        return 0,0,0,0,0 
 
 
 print(get_extra_data(2058968711))
@@ -44,15 +44,15 @@ print(get_extra_data(2058968711))
 list_of_dataframes = np.array_split(df, 5)
 
 def extra_data(i):
-        for index, row in list_of_dataframes[i].iterrows():
-            uid = row['uid']
-            b, y, s, u, t = get_extra_data(uid)
-            list_of_dataframes[i].loc[index, 'year'] = b
-            list_of_dataframes[i].loc[index, 'type_perec'] = y
-            list_of_dataframes[i].loc[index, 'hot_water'] = s
-            list_of_dataframes[i].loc[index, 'fundament'] = u
-            list_of_dataframes[i].loc[index, 'kitchen'] = t
-            list_of_dataframes[i].to_csv(f"data_{i}.csv")
+    for index, row in list_of_dataframes[i].iterrows():
+        uid = row['uid']
+        b, y, s, u, t = get_extra_data(uid)
+        list_of_dataframes[i].loc[index, 'year'] = b
+        list_of_dataframes[i].loc[index, 'type_perec'] = y
+        list_of_dataframes[i].loc[index, 'hot_water'] = s
+        list_of_dataframes[i].loc[index, 'fundament'] = u
+        list_of_dataframes[i].loc[index, 'kitchen'] = t
+        list_of_dataframes[i].to_csv(f"data_{i}.csv")
 
 
 if __name__ == '__main__':
