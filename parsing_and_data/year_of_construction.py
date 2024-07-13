@@ -1,27 +1,22 @@
-import json
 from all_def import DomClickApi
-import requests
 import pandas as pd
 from multiprocessing import *
 from bs4 import BeautifulSoup
-from queue import Queue
-import traceback
-from threading import Thread
-from datetime import datetime
 import numpy as np
 
 dca = DomClickApi()
 
 df = pd.read_csv(r"/parsing_and_data/paring_data/pc2.csv").drop(labels=["id"], axis=1)
 
+
 def get_extra_data(ui):
     dca = DomClickApi()
     try:
         res = dca.get(f"https://domclick.ru/card/sale__flat__{ui}", params={})
         soup = BeautifulSoup(res.content, 'html.parser')
-       
+
         p1 = soup.find('li', {'data-e2e-id': 'Год постройки'})
-        year = p1.find('span', {'data-e2e-id': 'Значение'}).text if p1 else 0 
+        year = p1.find('span', {'data-e2e-id': 'Значение'}).text if p1 else 0
 
         p2 = soup.find('li', {'data-e2e-id': 'Тип фундамента'})
         fundament = p2.find('span', {'data-e2e-id': 'Значение'}).text if p2 else 0
@@ -35,13 +30,15 @@ def get_extra_data(ui):
         p5 = soup.find('li', {'data-e2e-id': 'Кухня'})
         kitchen = p5.find('span', {'data-e2e-id': 'Значение'}).text if p5 else 0
         return year, type_perec, hot_water, fundament, kitchen
-    except:
-        return 0,0,0,0,0 
+
+    except Exception as e:
+        return 0, 0, 0, 0, 0
 
 
-print(get_extra_data(2058968711))
+print("TEST .. PASSED" + get_extra_data(2058968711))
 
 list_of_dataframes = np.array_split(df, 5)
+
 
 def extra_data(i):
     for index, row in list_of_dataframes[i].iterrows():
