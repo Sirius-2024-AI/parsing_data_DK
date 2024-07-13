@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "domclick-parser"
+version = "0.0.52"
+description = "parser data about flat from domclik"
+authors = ["Qwest1204 <workemailfordaniil@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.32.3"
+pandas = "^2.2.2"
+bs4 = "^0.0.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

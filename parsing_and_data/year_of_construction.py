@@ -12,7 +12,7 @@ import numpy as np
 
 dca = DomClickApi()
 
-df = pd.read_csv(r"C:\Users\danii\domclick-parser\parsing_and_data\paring_data\pc2.csv").drop(labels=["id"], axis=1)
+df = pd.read_csv(r"/parsing_and_data/paring_data/pc2.csv").drop(labels=["id"], axis=1)
 
 def get_extra_data(ui):
     dca = DomClickApi()
