@@ -49,6 +49,7 @@ def extra_data(i):
         list_of_dataframes[i].loc[index, 'hot_water'] = s
         list_of_dataframes[i].loc[index, 'fundament'] = u
         list_of_dataframes[i].loc[index, 'kitchen'] = t
+
         list_of_dataframes[i].to_csv(f"data_{i}.csv")
 
 
