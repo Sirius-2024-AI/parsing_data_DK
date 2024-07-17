@@ -118,6 +118,12 @@ def parser(guid, view_from_window, repair, room, balcony, wall_type, file):
                 house = item['house']
                 url = item['id']
                 object_info = item['object_info']
+                try:
+                    metro_distance = address['subways'][0]['distance']
+                    metro_name = address['subways'][0]['display_name']
+                except KeyError:
+                    metro_distance = None
+                    metro_name = None
                 row = {
                     "address": address['name'],
                     "price": price['price'],
@@ -131,6 +137,10 @@ def parser(guid, view_from_window, repair, room, balcony, wall_type, file):
                     "url": url,
                     "view_from_window": view_from_window,
                     "wall_type": wall_type,
+                    "lon": address['position']['lon'],
+                    "lat": address['position']['lat'],
+                    "metro_distance": metro_distance,
+                    "metro_name": metro_name
 
                 }
                 dataset.append(row)
